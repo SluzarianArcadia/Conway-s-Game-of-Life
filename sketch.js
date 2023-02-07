@@ -1,24 +1,43 @@
-var cols = 64
-var rows = 44
+var cols = 50;
+var rows = 50;
+console.log(cols)
+console.log(rows)
+
 var canvasWidth = window.innerWidth - 150;
 var canvasHeight = window.innerHeight - 150;
 var board = Array.from(Array(rows), () => new Array(cols));
 var renderingBoard = Array.from(Array(rows), () => new Array(cols));
 var counter = 0;
+var next = Array.from(Array(rows), () => new Array(cols));
+
+const colsInput = document.getElementById('cols');
+const rowsInput = document.getElementById('rows');
+
+colsInput.addEventListener('change', updateValue);
+rowsInput.addEventListener('change', updateValue);
+
+
+function updateValue(e) {
+    console.log(e.target.value)
+    console.log(e.target.id)
+    e.target.id = e.target.value
+  }
+
 
 function setup(){
 idNum = document.getElementById('generationsNum');
 var cnv = createCanvas(canvasWidth, canvasHeight)
 var x = (windowWidth - width) / 2;
-var y = (windowHeight - height) / 2;
+var y = (windowHeight - height) +200;
 cnv.position(x, y);
 background(255, 255, 255);
 renderGeneration(getRandomCells(board));
+
 }
 
  function draw(){
-     next = Array.from(Array(rows), () => new Array(cols));
-     board = evaluateFitnessOfCell(findNeighbors(board,next),board, next)
+    next = Array.from(Array(rows), () => new Array(cols));
+    board = evaluateFitnessOfCell(findNeighbors(board,next),board, next)
     renderGeneration(board)
     idNum.innerHTML = "Total Number of Generations: " + counter++;
 }
@@ -41,17 +60,22 @@ renderGeneration(getRandomCells(board));
 
     
 function renderGeneration (board){
+    
     generationColor1 = Math.floor(Math.random() * 256);
     generationColor2 = Math.floor(Math.random() * 256);
     generationColor3 =  Math.floor(Math.random() * 256);
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
+
+            translate(i+j);
+
             if (board[i][j] === 0) {
                 fill(generationColor1, generationColor2, generationColor3, 60)
             } else {
                 fill(generationColor1, generationColor2, generationColor3)
             }
-            renderingBoard[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows),5)               
+            renderingBoard[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows))   
         }
     }
 }
@@ -109,3 +133,8 @@ function evaluateFitnessOfCell (neighborBoard, board, next){
     }
  return next;
 }
+
+
+function windowResized() {
+    resizeCanvas(window.innerWidth - 150, window.innerHeight - 150);
+  }

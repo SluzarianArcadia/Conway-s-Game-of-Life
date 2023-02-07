@@ -7,6 +7,7 @@
         <meta name="description" content="Techno Version of Conway's Game of Life">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body class="container-fluid">
 
@@ -17,9 +18,18 @@
             </div>
 
 
-                
+            <div class="grid">
+                <label for="range">How Many Columns
+                    <input type="range" min="0" max="100" value="50" id="cols" name="range">
+                  </label>
+                  <label for="range"> How Many Rows
+                    <input type="range" min="0" max="100" value="50" id="rows" name="range">
+                  </label>  
+            </div>
 
-        <footer style=" position: absolute; top: 900px; left: 100px;">Made by Eric Slusarz</footer>
+
+        
+        <footer style=" position: absolute; top:1100px; left: 100px;">Made by Eric Slusarz</footer>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
         <script src="sketch.js"></script>
     </body>
