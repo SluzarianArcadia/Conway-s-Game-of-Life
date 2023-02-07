@@ -1,5 +1,5 @@
-var cols = 44
-var rows = 74
+var cols = 64
+var rows = 44
 var canvasWidth = window.innerWidth - 150;
 var canvasHeight = window.innerHeight - 150;
 var board = Array.from(Array(rows), () => new Array(cols));
