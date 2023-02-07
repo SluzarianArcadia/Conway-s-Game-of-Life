@@ -1,9 +1,11 @@
-var cols = 15
-var rows = 10
+var cols = 100
+var rows = 100
 var canvasWidth = window.innerWidth - 200;
 var canvasHeight = window.innerHeight - 200;
-var board = Array.from(Array(10), () => new Array(15));
-var next = Array.from(Array(10), () => new Array(15));
+var board = Array.from(Array(rows), () => new Array(cols));
+var board2 = Array.from(Array(rows), () => new Array(cols));
+var next = Array.from(Array(rows), () => new Array(cols));
+var renderingBoard = Array.from(Array(rows), () => new Array(cols));
 
 
 
@@ -20,25 +22,17 @@ renderGeneration(board);
 }
 
 
-function draw(){
-    // board = findNeighbors(board)
-    // board = evaluateFitnessOfCell(board)
-
-
-    // renderGeneration(board)
-}
-
-function windowResized() {
-    cnvRe = resizeCanvas(window.innerWidth - 200, window.innerHeight - 200);
-    background(255, 0, 200);
-  }
-
+ function draw(){
+    neighborBoard = findNeighbors(board)
+    board = evaluateFitnessOfCell(neighborBoard,board)
+    renderGeneration(board)
+ }
 
 
   function getRandomCells(board){
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            var rand = Math.random() < 0.5;
+            var rand = Math.random() < 0.7;
             if (rand){
                 board[i][j] = 1;
             } else {
@@ -59,55 +53,51 @@ function renderGeneration (board){
             } else {
                 fill(0)
             }
-             next[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows))               
+            renderingBoard[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows))               
         }
     }
 }
 
 
 function findNeighbors(board){
-    var aliveCells, topLeft ,top ,topRight , right, rightBot, bot, leftBot, left;
-    next = Array.from(Array(10), () => new Array(15));
+    var  topLeft ,top ,topRight , right, rightBot, bot, leftBot, left;
+    next = Array.from(Array(rows), () => new Array(cols));
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            aliveCells = topLeft =top =topRight =right =rightBot =bot =leftBot =left =0;
+
+            topLeft =   board[(i-1+rows) % rows][(j-1 +cols) % cols]
+            top =       board[(i-1+rows) % rows][j]
+            topRight =  board[(i-1+rows) % rows][(j+1 +cols) % cols]
+            right =     board[i][(j+1 +cols) % cols]
+            rightBot =  board[(i+1+rows) % rows][(j+1 +cols) % cols]
+            bot  =      board[(i+1+rows) % rows][j]
+            leftBot =   board[(i+1+rows) % rows][(j-1 +cols) % cols]
+            left =      board[i][(j-1 +cols) % cols]
 
 
-            topLeft =  board[(i-1+10) % 10][(j-1 +15) % 15]
-            top =      board[(i-1+10) % 10][j]
-            topRight =  board[(i-1+10) % 10][(j+1 +15) % 15]
-            right =     board[i][(j+1 +15) % 15]
-            rightBot =  board[(i+1+10) % 10][(j+1 +15) % 15]
-            bot  =      board[(i+1+10) % 10][j]
-            leftBot =   board[(i+1+10) % 10][(j-1 +15) % 15]
-            left =      board[i][(j-1 +15) % 15]
-
-
-            var spacer = topLeft + top +topRight + right + rightBot + bot + leftBot + left;
-            next[i][j] = spacer
+            next[i][j] = topLeft + top +topRight + right + rightBot + bot + leftBot + left;
             
         }
     }
-
     return next 
 }
 
-function evaluateFitnessOfCell (board){
-    next = Array.from(Array(10), () => new Array(15));
+function evaluateFitnessOfCell (neighborBoard, board){
+    next = Array.from(Array(rows), () => new Array(cols));
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             selectedCell = board[i][j]
-            console.log(selectedCell)
-            if (selectedCell < 2 || selectedCell > 3) {
-                next[i][j] = 0
-            } else {
-                next[i][j] = 1
-            }
-            
+            selectedCellNeighbors = neighborBoard[i][j]
 
+            if (selectedCell == 0 && selectedCellNeighbors == 3) {
+                next[i][j] = 1;
+            } else if (selectedCell == 1 && (selectedCellNeighbors < 2 || selectedCellNeighbors > 3)) {
+                next[i][j] = 0;
+            } else {
+                next[i][j] = selectedCell;
+            }
         }
     }
-    console.log(next)
  return next;
 }
