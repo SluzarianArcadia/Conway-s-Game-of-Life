@@ -1,38 +1,33 @@
-var cols = 100
-var rows = 100
-var canvasWidth = window.innerWidth - 200;
-var canvasHeight = window.innerHeight - 200;
+var cols = 40
+var rows = 40
+var canvasWidth = window.innerWidth - 150;
+var canvasHeight = window.innerHeight - 150;
 var board = Array.from(Array(rows), () => new Array(cols));
-var board2 = Array.from(Array(rows), () => new Array(cols));
-var next = Array.from(Array(rows), () => new Array(cols));
 var renderingBoard = Array.from(Array(rows), () => new Array(cols));
-
-
+var counter = 0;
 
 function setup(){
+idNum = document.getElementById('generationsNum');
 var cnv = createCanvas(canvasWidth, canvasHeight)
 var x = (windowWidth - width) / 2;
 var y = (windowHeight - height) / 2;
 cnv.position(x, y);
-background(255, 0, 200);
-
-board = getRandomCells(board);
-renderGeneration(board);
-
+background(255, 255, 255);
+renderGeneration( getRandomCells(board));
 }
 
-
  function draw(){
-    neighborBoard = findNeighbors(board)
-    board = evaluateFitnessOfCell(neighborBoard,board)
+    next = Array.from(Array(rows), () => new Array(cols));
+    board = evaluateFitnessOfCell(findNeighbors(board,next),board, next)
     renderGeneration(board)
- }
+    idNum.innerHTML = counter++;
+}
 
 
   function getRandomCells(board){
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            var rand = Math.random() < 0.7;
+            var rand = Math.random() < 0.5;
             if (rand){
                 board[i][j] = 1;
             } else {
@@ -46,35 +41,35 @@ renderGeneration(board);
 
     
 function renderGeneration (board){
+    generationColor1 = Math.floor(Math.random() * 256);
+    generationColor2 = Math.floor(Math.random() * 256);
+    generationColor3 =  Math.floor(Math.random() * 256);
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             if (board[i][j] === 0) {
                 fill(255)
             } else {
-                fill(0)
+                fill(generationColor1, generationColor2, generationColor3)
             }
-            renderingBoard[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows))               
+            renderingBoard[i][j] = rect(canvasWidth/cols * j, canvasHeight/rows * i, (canvasWidth/cols), (canvasHeight/rows),5)               
         }
     }
 }
 
 
 function findNeighbors(board){
-    var  topLeft ,top ,topRight , right, rightBot, bot, leftBot, left;
-    next = Array.from(Array(rows), () => new Array(cols));
-
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
 
-            topLeft =   board[(i-1+rows) % rows][(j-1 +cols) % cols]
-            top =       board[(i-1+rows) % rows][j]
-            topRight =  board[(i-1+rows) % rows][(j+1 +cols) % cols]
-            right =     board[i][(j+1 +cols) % cols]
-            rightBot =  board[(i+1+rows) % rows][(j+1 +cols) % cols]
-            bot  =      board[(i+1+rows) % rows][j]
-            leftBot =   board[(i+1+rows) % rows][(j-1 +cols) % cols]
-            left =      board[i][(j-1 +cols) % cols]
-
+            var topLeft =   board[(i-1+rows) % rows][(j-1 +cols) % cols]
+            var top =       board[(i-1+rows) % rows][j]
+            var topRight =  board[(i-1+rows) % rows][(j+1 +cols) % cols]
+            var right =     board[i][(j+1 +cols) % cols]
+            var rightBot =  board[(i+1+rows) % rows][(j+1 +cols) % cols]
+            var bot  =      board[(i+1+rows) % rows][j]
+            var leftBot =   board[(i+1+rows) % rows][(j-1 +cols) % cols]
+            var left =      board[i][(j-1 +cols) % cols]
 
             next[i][j] = topLeft + top +topRight + right + rightBot + bot + leftBot + left;
             
@@ -83,8 +78,7 @@ function findNeighbors(board){
     return next 
 }
 
-function evaluateFitnessOfCell (neighborBoard, board){
-    next = Array.from(Array(rows), () => new Array(cols));
+function evaluateFitnessOfCell (neighborBoard, board, next){
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             selectedCell = board[i][j]
