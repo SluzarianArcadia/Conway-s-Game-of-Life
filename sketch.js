@@ -13,7 +13,7 @@ var x = (windowWidth - width) / 2;
 var y = (windowHeight - height) / 2;
 cnv.position(x, y);
 background(255, 255, 255);
-renderGeneration( getRandomCells(board));
+renderGeneration(getRandomCells(board));
 }
 
  function draw(){
@@ -45,10 +45,14 @@ function renderGeneration (board){
     generationColor2 = Math.floor(Math.random() * 256);
     generationColor3 =  Math.floor(Math.random() * 256);
 
+    death1 = Math.floor(Math.random() * 10);
+    death2 = Math.floor(Math.random() * 10);
+    death3 =  Math.floor(Math.random() * 10);
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             if (board[i][j] === 0) {
-                fill(255)
+                fill(generationColor1, generationColor2, generationColor3, 60)
             } else {
                 fill(generationColor1, generationColor2, generationColor3)
             }
