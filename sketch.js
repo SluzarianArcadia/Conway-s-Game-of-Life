@@ -1,5 +1,5 @@
-var cols = 40
-var rows = 40
+var cols = 44
+var rows = 74
 var canvasWidth = window.innerWidth - 150;
 var canvasHeight = window.innerHeight - 150;
 var board = Array.from(Array(rows), () => new Array(cols));
@@ -17,10 +17,10 @@ renderGeneration(getRandomCells(board));
 }
 
  function draw(){
-    next = Array.from(Array(rows), () => new Array(cols));
-    board = evaluateFitnessOfCell(findNeighbors(board,next),board, next)
+     next = Array.from(Array(rows), () => new Array(cols));
+     board = evaluateFitnessOfCell(findNeighbors(board,next),board, next)
     renderGeneration(board)
-    idNum.innerHTML = counter++;
+    idNum.innerHTML = "Total Number of Generations: " + counter++;
 }
 
 
@@ -44,11 +44,6 @@ function renderGeneration (board){
     generationColor1 = Math.floor(Math.random() * 256);
     generationColor2 = Math.floor(Math.random() * 256);
     generationColor3 =  Math.floor(Math.random() * 256);
-
-    death1 = Math.floor(Math.random() * 10);
-    death2 = Math.floor(Math.random() * 10);
-    death3 =  Math.floor(Math.random() * 10);
-
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             if (board[i][j] === 0) {
@@ -63,17 +58,32 @@ function renderGeneration (board){
 
 
 function findNeighbors(board){
+
+    // var testBoard = Array.from(Array(rows), () => new Array(cols));
+        var loopingSum = 0;
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
+
+            // for (let k = -1; k < 2; k++) {
+            //     for (let p = -1; p < 2; p++) {
+            //         console.log("this is k  " + k + "and this is p  " + p)
+            //         loopingSum = loopingSum + board[i][j]
+            //     }
+                
+            // }
 
             var topLeft =   board[(i-1+rows) % rows][(j-1 +cols) % cols]
             var top =       board[(i-1+rows) % rows][j]
             var topRight =  board[(i-1+rows) % rows][(j+1 +cols) % cols]
+
+            var left =      board[i][(j-1 +cols) % cols]
+
+
             var right =     board[i][(j+1 +cols) % cols]
             var rightBot =  board[(i+1+rows) % rows][(j+1 +cols) % cols]
             var bot  =      board[(i+1+rows) % rows][j]
             var leftBot =   board[(i+1+rows) % rows][(j-1 +cols) % cols]
-            var left =      board[i][(j-1 +cols) % cols]
 
             next[i][j] = topLeft + top +topRight + right + rightBot + bot + leftBot + left;
             

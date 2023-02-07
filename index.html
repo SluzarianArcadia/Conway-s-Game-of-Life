@@ -3,18 +3,23 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
+        <title>Techno Version of Conway's Game of Life</title>
+        <meta name="description" content="Techno Version of Conway's Game of Life">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
     </head>
-    <body>
+    <body class="container-fluid">
 
-            <span>Conway's Game of Life p5 Implementation: </span>
+            <div class="grid">
+                <h2>Conway's Game of Life p5 Implementation  </h2>
 
-                Total Number of Generations: <span id="generationsNum"></span>
+                <p id="generationsNum"></p>
+            </div>
 
-        <footer>Made by Eric Slusarz</footer>
+
+                
+
+        <footer style=" position: absolute; top: 900px; left: 100px;">Made by Eric Slusarz</footer>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
         <script src="sketch.js"></script>
     </body>
